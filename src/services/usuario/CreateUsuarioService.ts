@@ -1,15 +1,25 @@
 import prismaClient    from "../../prisma";
 import { hash } from "bcryptjs";
+enum Papel {
+    valor1="ALUNO",
+    valor2="PROFESSOR"
+  }
 interface UsuarioRequest {
     nome: string;
     email: string;
-    password: string
+    password: string;
+    role    : Papel;
 }
+
 class CreateUsuarioService {
-    async execute({ nome, email, password }: UsuarioRequest) {
+    async execute({ nome, email, password, role }: UsuarioRequest) {
         //verificar envio de dados
         if (!email) {
             throw new Error("Email é obrigatório")
+        }
+        //verificar envio de dados
+        if (!role) {
+            throw new Error("Papel (role) do usuário é obrigatório")
         }
         //verificar se email ja existe
         const usuarioJaExiste = await prismaClient.user.findFirst({
@@ -28,12 +38,14 @@ class CreateUsuarioService {
             data: {
                 nome: nome,
                 email: email,
-                password: passwordHash
+                password: passwordHash,
+                role:role,
             },
             select:{
                 id:true,
                 nome:true,
-                email:true
+                email:true,
+                role:true
             }
         })
         return usuario;

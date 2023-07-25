@@ -11,12 +11,37 @@ datasource db {
 }
 //Criar uma "Migration": yarn prisma migrate dev
 model User {
-  id String @id @default(uuid())
-  nome String
-  email String
-  password String
-  criacao DateTime? @default(now())
-  alteracao DateTime? @default(now())
+  id        String     @id @default(uuid())
+  nome      String
+  email     String
+  password  String
+  role      Papel      @default(ALUNO)
+  professor Professor?
+  aluno     Aluno?
+  criacao   DateTime?  @default(now())
+  alteracao DateTime?  @default(now())
 
   @@map("usuario")
+}
+
+model Professor {
+  id        String @id @default(uuid())
+  titulacao String
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String @unique
+
+  @@map("professor")
+}
+
+model Aluno {
+  id     String @id @default(uuid())
+  turma  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+  @@map("aluno")
+}
+
+enum Papel {
+  ALUNO
+  PROFESSOR
 }

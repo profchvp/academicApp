@@ -3,13 +3,14 @@ import { CreateUsuarioService } from '../../services/usuario/CreateUsuarioServic
 
 class CreateUsuarioController {
     async handle(req: Request, res: Response) {
-        const { nome, email, password } = req.body;
+        const { nome, email, password, role } = req.body;
 
         const createUsuarioService = new CreateUsuarioService();
         const usuario = await createUsuarioService.execute({
             nome,
             email,
-            password
+            password,
+            role
         })
 
         return res.json(usuario)

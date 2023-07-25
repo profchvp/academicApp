@@ -9,7 +9,8 @@ async execute(usuario_id:string){
     select:{
         id:true,
         nome:true,
-        email:true
+        email:true,
+        role:true,
     }
    })
    return usuario;

@@ -26,7 +26,8 @@ class AuthUsuarioService {
         //gerar um token JWT e devolver dados do usuário (Id, nome, email)
         const token = sign({
             nome: usuario.nome,
-            email: usuario.email
+            email: usuario.email,
+            role:usuario.role
         },
             process.env.JWT_SECRET,{
                 subject:usuario.id,
@@ -37,6 +38,7 @@ class AuthUsuarioService {
             id:usuario.id,
             nome:usuario.nome,
             email:usuario.email,
+            role:usuario.role,
             "token": token }
 
     }
